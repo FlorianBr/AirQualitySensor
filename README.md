@@ -5,6 +5,49 @@ The data should be displayed on the LCD and also transmitted to Home Assistant f
 
 ## Hardware
 
+### ESP32
+
+- IO0 - x
+- IO1 - LCD Backlight
+- IO2 - Speaker LRCLK (?)
+- IO3 - Touch Int
+- IO4 - Touch CSL (?)
+- IO5 - 
+- IO6 - 
+- IO7 - 
+- IO8 - Touch SDA (?)
+- IO9 - 
+- IO10 - CS (?)
+- IO11 - Touch MISO
+- IO12 - Touch CLK
+- IO13 - Touch MOSI
+- IO14 - 
+- IO15 - 
+- IO16 - 
+- IO17 - U1 TXD
+- IO18 - U1 RXD
+- IO19 - USB+
+- IO20 - USB-
+- IO21 - LCD QSPI D0
+- IO38 - Touch CS
+- IO39 - LCD QSPI D3
+- IO40 - LCD QSPI D2
+- IO41 - Speaker DIn
+- IO42 - Speaker BCLK
+- IO43 - U0 TXD 
+- IO44 - U0 RXD
+- IO45 - LCD CS
+- IO46 - 
+- IO47 - LCD QSPI CLK
+- IO48 - LCD QSPI D1
+
+
+### Display
+
+- 480x272 pixel, 16 bit color
+- Driver: [NV3041A](https://admin.osptek.com/uploads/NV_3041_A_Datasheet_V1_2_20221011_686486a221.pdf)
+- Touch Panel: XPT2046
+
 ### Components
 
 - ESP32+Display: [Guition GJC4827W543](https://github.com/lsdlsd88/JC4827W543)
@@ -15,9 +58,19 @@ The data should be displayed on the LCD and also transmitted to Home Assistant f
 
 ## Software
 
-A big todo. Not sure yet if esp-idf with MQTT connectivity or ESPHome.
+Not sure yet if I'll use the esp-idf with MQTT connectivity or the easier but muuuch more limited ESPHome.
+I guess I'll try both and start with ESPHome while waiting for the ordered sensor boards.
 
-## TODO
+## TODO (ESPHome)
+
+- [x] Basic yaml
+- [x] Display
+- [ ] BME280
+- [ ] SPG40
+- [ ] SCD41
+- [ ] SDS011
+
+## TODO (esp-idf)
 
 - [ ] Base Software
 - [ ] SW Driver: BME280

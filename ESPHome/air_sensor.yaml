@@ -1,0 +1,193 @@
+esphome:
+  name: air-quali-sensor
+  friendly_name: Air Quality Sensor
+  min_version: 2025.11.4
+  on_boot:
+    - priority: 600
+      then:
+        - light.turn_on: 
+            id: lcd_backlight
+            brightness: 50%
+
+esp32:
+  variant: esp32s3
+  framework:
+    type: esp-idf
+
+psram:
+  mode: octal
+  speed: 80MHz
+  
+logger:
+
+api:
+  encryption:
+    key: "zCS46Vye8pum61XZ29k4pSJtY+3K4NFTcwnQUWmvAvo="
+
+ota:
+  - platform: esphome
+    password: ""
+
+wifi:
+  ssid: !secret ssid
+  password: !secret pass
+
+web_server:
+  port: 80
+
+# The Display
+output:
+  - platform: ledc
+    pin: GPIO1
+    id: lcd_backlight_output
+
+light:
+  - platform: monochromatic
+    output: lcd_backlight_output
+    name: "Panel Backlight"
+    id: lcd_backlight
+
+spi:
+  - id: quad_spi_bus
+    type: quad
+    clk_pin: GPIO47
+    data_pins:
+      - GPIO21
+      - GPIO48
+      - GPIO40
+      - GPIO39
+  - id: touch_spi
+    clk_pin: GPIO12
+    mosi_pin: GPIO11
+    miso_pin: GPIO13
+
+display:
+  - platform: mipi_spi
+    model: CUSTOM
+    bus_mode: quad
+    cs_pin: GPIO45
+    dimensions: 
+      height: 272
+      width: 480
+    color_order: rgb
+    invert_colors: true
+    init_sequence:
+      - [0x41, 0x03]
+      - [0x44, 0x15]
+      - [0x45, 0x15]
+      - [0x7d, 0x03]
+      - [0xc1, 0xbb]
+      - [0xc2, 0x05]
+      - [0xc3, 0x10]
+      - [0xc6, 0x3e]
+      - [0xc7, 0x25]
+      - [0xc8, 0x11]
+      - [0x7a, 0x5f]
+      - [0x6f, 0x44]
+      - [0x78, 0x70]
+      - [0xc9, 0x00]
+      - [0x67, 0x21]
+      - [0x51, 0x0a]
+      - [0x52, 0x76]
+      - [0x53, 0x0a]
+      - [0x54, 0x76]
+      - [0x46, 0x0a]
+      - [0x47, 0x2a]
+      - [0x48, 0x0a]
+      - [0x49, 0x1a]
+      - [0x56, 0x43]
+      - [0x57, 0x42]
+      - [0x58, 0x3c]
+      - [0x59, 0x64]
+      - [0x5a, 0x41]
+      - [0x5b, 0x3c]
+      - [0x5c, 0x02]
+      - [0x5d, 0x3c]
+      - [0x5e, 0x1f]
+      - [0x60, 0x80]
+      - [0x61, 0x3f]
+      - [0x62, 0x21]
+      - [0x63, 0x07]
+      - [0x64, 0xe0]
+      - [0x65, 0x02]
+      - [0xca, 0x20]
+      - [0xcb, 0x52]
+      - [0xcc, 0x10]
+      - [0xcD, 0x42]
+      - [0xD0, 0x20]
+      - [0xD1, 0x52]
+      - [0xD2, 0x10]
+      - [0xD3, 0x42]
+      - [0xD4, 0x0a]
+      - [0xD5, 0x32]
+      - [0x80, 0x00]
+      - [0xA0, 0x00]
+      - [0x81, 0x07]
+      - [0xA1, 0x06]
+      - [0x82, 0x02]
+      - [0xA2, 0x01]
+      - [0x86, 0x11]
+      - [0xA6, 0x10]
+      - [0x87, 0x27]
+      - [0xA7, 0x27]
+      - [0x83, 0x37]
+      - [0xA3, 0x37]
+      - [0x84, 0x35]
+      - [0xA4, 0x35]
+      - [0x85, 0x3f]
+      - [0xA5, 0x3f]
+      - [0x88, 0x0b]
+      - [0xA8, 0x0b]
+      - [0x89, 0x14]
+      - [0xA9, 0x14]
+      - [0x8a, 0x1a]
+      - [0xAa, 0x1a]
+      - [0x8b, 0x0a]
+      - [0xAb, 0x0a]
+      - [0x8c, 0x14]
+      - [0xAc, 0x08]
+      - [0x8d, 0x17]
+      - [0xAd, 0x07]
+      - [0x8e, 0x16]
+      - [0xAe, 0x06]
+      - [0x8f, 0x1B]
+      - [0xAf, 0x07]
+      - [0x90, 0x04]
+      - [0xB0, 0x04]
+      - [0x91, 0x0A]
+      - [0xB1, 0x0A]
+      - [0x92, 0x16]
+      - [0xB2, 0x15]
+      - [0xff, 0x00]
+      - [0x11, 0x00]
+      - [0x29, 0x00]
+    lambda: |-
+      auto black = Color(0, 0, 0);
+      auto red = Color(255, 0, 0);
+      auto green = Color(0, 255, 0);
+      auto blue = Color(0, 0, 255);
+      auto white = Color(255, 255, 255);         
+      it.line(0, 0, it.get_width(), it.get_height(), white);
+      it.line(0, it.get_height(), it.get_width(), 0, white);
+      it.rectangle(0, 0, it.get_width(), it.get_height(), white);
+      it.filled_rectangle(0, 0, 50, 50, red);
+      it.filled_rectangle(50, 50, 50, 50, green);
+      it.filled_rectangle(100, 100, 50, 50, blue);
+      it.print(0, 0, id(roboto_20), "Hello World!");
+
+font:
+  - file: "gfonts://Roboto"
+    id: roboto_20
+    size: 20
+
+# The Touchscreen
+touchscreen:
+  - platform: xpt2046
+    id: lcd_touchscreen
+    cs_pin: GPIO38
+    interrupt_pin: GPIO3
+    calibration:
+      x_min: 350
+      x_max: 3860
+      y_min: 340
+      y_max: 3860
