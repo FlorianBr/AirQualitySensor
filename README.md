@@ -65,7 +65,7 @@ I guess I'll try both and start with ESPHome while waiting for the ordered senso
 
 - [x] Basic yaml
 - [x] Display
-- [ ] BME280
+- [x] BME280
 - [ ] SPG40
 - [ ] SCD41
 - [ ] SDS011

@@ -161,19 +161,23 @@ display:
       - [0xff, 0x00]
       - [0x11, 0x00]
       - [0x29, 0x00]
+    # lambda: |-
+    #   auto black = Color(0, 0, 0);
+    #   auto red = Color(255, 0, 0);
+    #   auto green = Color(0, 255, 0);
+    #   auto blue = Color(0, 0, 255);
+    #   auto white = Color(255, 255, 255);         
+    #   it.line(0, 0, it.get_width(), it.get_height(), white);
+    #   it.line(0, it.get_height(), it.get_width(), 0, white);
+    #   it.rectangle(0, 0, it.get_width(), it.get_height(), white);
+    #   it.filled_rectangle(0, 0, 50, 50, red);
+    #   it.filled_rectangle(50, 50, 50, 50, green);
+    #   it.filled_rectangle(100, 100, 50, 50, blue);
+    #   it.print(0, 0, id(roboto_20), "Hello World!");
     lambda: |-
-      auto black = Color(0, 0, 0);
-      auto red = Color(255, 0, 0);
-      auto green = Color(0, 255, 0);
-      auto blue = Color(0, 0, 255);
-      auto white = Color(255, 255, 255);         
-      it.line(0, 0, it.get_width(), it.get_height(), white);
-      it.line(0, it.get_height(), it.get_width(), 0, white);
-      it.rectangle(0, 0, it.get_width(), it.get_height(), white);
-      it.filled_rectangle(0, 0, 50, 50, red);
-      it.filled_rectangle(50, 50, 50, 50, green);
-      it.filled_rectangle(100, 100, 50, 50, blue);
-      it.print(0, 0, id(roboto_20), "Hello World!");
+      it.printf(0,  0, id(roboto_20), "Temperature: %.1f °C", id(bme_temp).state);
+      it.printf(0, 20, id(roboto_20), "Pressure: %.0f hPa", id(bme_pressure).state);
+      it.printf(0, 40, id(roboto_20), "Humidity: %.0f %%", id(bme_humidity).state);
 
 font:
   - file: "gfonts://Roboto"
@@ -191,3 +195,24 @@ touchscreen:
       x_max: 3860
       y_min: 340
       y_max: 3860
+
+# Sensors
+i2c:
+  sda: GPIO17
+  scl: GPIO18
+  scan: true
+  id: sensor_i2c_bus
+
+sensor:
+  - platform: bme280_i2c
+    address: 0x76
+    update_interval: 15s
+    temperature:
+      name: "BME280 Temperature"
+      id: bme_temp
+    pressure:
+      name: "BME280 Pressure"
+      id: bme_pressure
+    humidity:
+      name: "BME280 Humidity"
+      id: bme_humidity
