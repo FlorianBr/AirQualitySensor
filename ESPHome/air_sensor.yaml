@@ -178,6 +178,8 @@ display:
       it.printf(0,  0, id(roboto_20), "Temperature: %.1f °C", id(bme_temp).state);
       it.printf(0, 20, id(roboto_20), "Pressure: %.0f hPa", id(bme_pressure).state);
       it.printf(0, 40, id(roboto_20), "Humidity: %.0f %%", id(bme_humidity).state);
+      it.printf(0, 60, id(roboto_20), "VOC: %.0f %%", id(voc_index).state);
+      it.printf(0, 80, id(roboto_20), "NOx: %.0f %%", id(nox_index).state);
 
 font:
   - file: "gfonts://Roboto"
@@ -216,3 +218,13 @@ sensor:
     humidity:
       name: "BME280 Humidity"
       id: bme_humidity
+  - platform: sgp4x
+    voc:
+      name: "VOC Index"
+      id: voc_index
+    nox:
+      name: "NOx Index"
+      id: nox_index
+    compensation:
+      humidity_source: bme_humidity
+      temperature_source: bme_temp
