@@ -5,9 +5,24 @@ The data should be displayed on the LCD and also transmitted to Home Assistant f
 
 ## Hardware
 
+### Components
+
+- ESP32+Display: [Guition GJC4827W543](https://github.com/lsdlsd88/JC4827W543)
+- Temperature, Pressure, Humidity: GY-BME280-3.3
+- CO2-Sensor: SCD41
+- VOC-Sensor: GY-SPG40
+- Particles: SDS011
+
+### Prototype
+
+The I2C sensors are wired in parallel to the 4-pin connector on the board, with IO17 and IO18 for SDA and SCL.
+I still wait for the SDS011 sensor, maybe I need to change the wiring then. We'll see.
+
+![Breadboard](breadboard.jpg)
+
 ### ESP32
 
-- IO0 - x
+- IO0 - 
 - IO1 - LCD Backlight
 - IO2 - Speaker LRCLK (?)
 - IO3 - Touch Int
@@ -48,17 +63,9 @@ The data should be displayed on the LCD and also transmitted to Home Assistant f
 - Driver: [NV3041A](https://admin.osptek.com/uploads/NV_3041_A_Datasheet_V1_2_20221011_686486a221.pdf)
 - Touch Panel: XPT2046
 
-### Components
-
-- ESP32+Display: [Guition GJC4827W543](https://github.com/lsdlsd88/JC4827W543)
-- Temperature, Pressure, Humidity: GY-BME280-3.3
-- CO2-Sensor: SCD41
-- VOC-Sensor: GY-SPG40
-- Particles: SDS011
-
 ## Software
 
-Not sure yet if I'll use the esp-idf with MQTT connectivity or the easier but muuuch more limited ESPHome.
+Not sure yet if I'll use the esp-idf with MQTT connectivity or the easier but much more limited ESPHome.
 I guess I'll try both and start with ESPHome while waiting for the ordered sensor boards.
 
 ## TODO (ESPHome)
@@ -69,6 +76,7 @@ I guess I'll try both and start with ESPHome while waiting for the ordered senso
 - [x] SGP40
 - [ ] SCD41
 - [ ] SDS011
+- [ ] UI
 
 ## TODO (esp-idf)
 
